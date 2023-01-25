@@ -40,9 +40,48 @@ Feature: Hoover Navigation Validation
     When method POST
     Then status 400
 
+#Missing Parameters
+  Scenario: Validate missing roomSize error
+    Given url 'http://localhost:8080/v1/cleaning-sessions'
+    And request {"coords" : [-1,-3], "patches" : [[1,0],[2,2],[3,3]], "instructions" : "NNNNNNESEESWNWW"}
+    When method POST
+    Then status 400
+
+  Scenario: Validate missing coords error
+    Given url 'http://localhost:8080/v1/cleaning-sessions'
+    And request {"roomSize" : [3,3], "patches" : [[1,0],[2,2],[3,3]], "instructions" : "NNNNNNESEESWNWW"}
+    When method POST
+    Then status 400
+
+  Scenario: Validate missing patches error
+    Given url 'http://localhost:8080/v1/cleaning-sessions'
+    And request {"roomSize" : [3,3], "coords" : [-1,-3], "instructions" : "NNNNNNESEESWNWW"}
+    When method POST
+    Then status 400
+
+  Scenario: Validate missing instructions error
+    Given url 'http://localhost:8080/v1/cleaning-sessions'
+    And request {"roomSize" : [3,3], "coords" : [-1,-3], "patches" : [[1,0],[2,2],[3,3]]}
+    When method POST
+    Then status 400
+
 #Invalid API Calls
   Scenario: Validate error is displayed for wrong path
     Given url 'http://localhost:8080/v1/cleaning-sessionsss'
     And request {"roomSize" : [3,3], "coords" : [1,2], "patches" : [[1,0],[2,2],[3,3]], "instructions" : "NNNNNNESEESWNWW"}
     When method POST
     Then status 404
+    And match $.error == "Not Found"
+
+  Scenario: Validate error is displayed for wrong method
+    Given url 'http://localhost:8080/v1/cleaning-sessions'
+    And request {"roomSize" : [3,3], "coords" : [1,2], "patches" : [[1,0],[2,2],[3,3]], "instructions" : "NNNNNNESEESWNWW"}
+    When method GET
+    Then status 405
+    And match $.error == "Method Not Allowed"
+
+  Scenario: Validate error for missing body
+    Given url 'http://localhost:8080/v1/cleaning-sessions'
+    And request {}
+    When method POST
+    Then status 400
