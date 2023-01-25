@@ -1,13 +1,13 @@
 # Hoover Navigation Validation
 
-##Test Scenarios
-####Assumptions: All fields in the request are mandatory 
-Test scenarios are split in 3  groups  
+## Test Scenarios
+#### Assumptions: All fields in the request are mandatory 
+Test scenarios are split in 4  groups  
     1. Happy Path validation.  
     2. Missing Mandatory fields validation.  
     3. Invalid Values validation.  
     4. Invalid API calls.  
-##Bugs
+## Bugs
 
 In general more descriptive error messages are expected.  
 The bugs found during execution are listed below:  
